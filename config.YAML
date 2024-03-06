@@ -1,0 +1,19 @@
+credentials:
+  usernames:
+    pmieres:
+      email: pmieres@gmail.com
+      logged_in: False # Will be managed automatically
+      name: Patricio Mieres
+      password: neotools # Will be hashed automatically
+    rbriggs:
+      email: rbriggs@gmail.com
+      logged_in: False # Will be managed automatically
+      name: Rebecca Briggs
+      password: neotools # Will be hashed automatically
+cookie:
+  expiry_days: 1
+  key: some_signature_key # Must be string
+  name: some_cookie_name
+preauthorized:
+  emails:
+  - melsby@gmail.com
