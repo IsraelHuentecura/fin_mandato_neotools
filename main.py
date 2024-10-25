@@ -41,13 +41,21 @@ import plotly.express as px
 st.title('Sindicatos próximos a renovar mandato')
 
 df = pd.read_excel('./data/sindicatos_todas_las_regiones_para_streamlit.xlsx', sheet_name='Sheet1')
+#df = pd.read_excel('./data/sindicatos_puntaje.xlsx', sheet_name='Sheet1')
+
 
 # Hacer una side bar para poner los filtros
 st.sidebar.title('Filtros')
 # Hacer columna total de miembros
 df['TotalMiembros'] = df['Socios'] + df['Socias']
-df.FinMandato = pd.to_datetime(df.FinMandato)
-df.FechaDepositoEstatutos = pd.to_datetime(df.FechaDepositoEstatutos)
+try:
+    df.FinMandato = pd.to_datetime(df.FinMandato)
+    df.FechaDepositoEstatutos = pd.to_datetime(df.FechaDepositoEstatutos)
+except:
+    # Desde este formato: "27/09/2024"
+    df.FinMandato = pd.to_datetime(df.FinMandato, format='%d/%m/%Y')
+    df.FechaDepositoEstatutos = pd.to_datetime(df.FechaDepositoEstatutos, format='%d/%m/%Y')
+    
 
 # Agregar columna con las filas en que la columna sea menor a 2017 en la columna FechaDepositoEstatutos con un valor de SI o NO
 df['NecesitaRenovacion'] = df['FechaDepositoEstatutos'].apply(lambda x: 'Si' if x < pd.to_datetime('2017-01-01') else 'No')
@@ -157,7 +165,10 @@ df = df[(df['TotalMiembros'] >= miembros[0]) & (df['TotalMiembros'] <= miembros[
 df = df.sort_values(by=['FinMandato', 'TotalMiembros'], ascending=[True, False])
 
 #Dropear la columna prioridad
-df = df.drop(columns=['Prioridad'])
+try:
+    df = df.drop(columns=['Prioridad'])
+except:
+    pass
 # Mostrar el DataFrame filtrado en streamlit
 st.dataframe(df)
 
